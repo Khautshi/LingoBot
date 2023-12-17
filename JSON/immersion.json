@@ -1,0 +1,70 @@
+{
+  "1182729876441149440": {
+    "allowed": [
+      "ar"
+    ],
+    "reply": "يرجى الكتابة بالعربية فقط. يمنع التحدث بلغات أخرى في هذه القناة."
+  },
+  "1182923658923102278": {
+    "allowed": [
+      "de"
+    ],
+    "reply": "Bitte schreib nur auf Deutsch, andere Sprachen sind in diesem Kanal nicht erlaubt."
+  },
+  "1182924510756864000": {
+    "allowed": [
+      "en"
+    ],
+    "reply": "Please write only in english, other languages aren't allowed in this channel."
+  },
+  "1182924836864008214": {
+    "allowed": [
+      "es"
+    ],
+    "reply": "Por favor escribe solo en español, no se permiten otros idiomas en este canal."
+  },
+  "1182925233980715048": {
+    "allowed": [
+      "fr"
+    ],
+    "reply": "Écris seulement en français s'il te plaît, les autres langues sont interdites dans ce canal."
+  },
+  "1182925695618387999": {
+    "allowed": [
+      "it"
+    ],
+    "reply": "Per favore, scrivi solo in italiano. Altre lingue non sono ammesse in questo canale."
+  },
+  "1182925922748346408": {
+    "allowed": [
+      "ja"
+    ],
+    "reply": "日本語だけでポストしてください。このチャンネルでは日本語以外の言語を話すことは禁止です。"
+  },
+  "1182926129913413695": {
+    "allowed": [
+      "pt"
+    ],
+    "reply": "Por favor escreve só em português, outras línguas não são permitidas neste canal."
+  },
+  "1183311917436129341": {
+    "allowed": [
+      "ro"
+    ],
+    "reply": "Vă rugăm să scrieţi numai în română, alte limbi nu sunt permise în acest canal."
+  },
+  "1182926368367976558": {
+    "allowed": [
+      "ru"
+    ],
+    "reply": "Пожалуйста придерживайтесь только русскому языку, в этом канале не позволяется польза других языков."
+  },
+  "1182926926160072746": {
+    "allowed": [
+      "zh-cn",
+      "zh-tw",
+      "zh"
+    ],
+    "reply": "请注意，此频道内不允许使用普通话以外的任何语言。\n請注意，此頻道內不允許使用國語以外的任何語言。"
+  }
+}
