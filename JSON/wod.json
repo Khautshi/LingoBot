@@ -1,0 +1,89 @@
+{
+  "AR": {
+    "head": "كلمة اليوم",
+    "word": "الكلمة",
+    "definition": "المعنى",
+    "examples": "الأمثلة",
+    "name": "العربية"
+  },
+  "DE": {
+    "head": "Wort des Tages",
+    "word": "Wort",
+    "definition": "Bedeutung",
+    "examples": "Beispiele",
+    "name": "Deutsch"
+  },
+  "EN": {
+    "head": "Word of the Day",
+    "word": "Word",
+    "definition": "Definition",
+    "examples": "Examples",
+    "name": "English"
+  },
+  "ES": {
+    "head": "Palabra del Día",
+    "word": "Palabra",
+    "definition": "Definición",
+    "examples": "Ejemplos",
+    "name": "Español"
+  },
+  "FR": {
+    "head": "Mot du Jour",
+    "word": "Mot",
+    "definition": "Définition",
+    "examples": "Exemples",
+    "name": "Français"
+  },
+  "HK": {
+    "head": "",
+    "definition": "",
+    "examples": "",
+    "name": "廣東話"
+  },
+  "IT": {
+    "head": "Parola del Giorno",
+    "word": "Parola",
+    "definition": "Definizione",
+    "examples": "Esempi",
+    "name": "Italiano"
+  },
+  "JA": {
+    "head": "今日の単語",
+    "word": "単語",
+    "definition": "定義",
+    "examples": "例",
+    "name": "日本語"
+  },
+  "PT": {
+    "head": "Palavra do Dia",
+    "word": "Palavra",
+    "definition": "Definição",
+    "examples": "Exemplos",
+    "name": "Português"
+  },
+  "RO": {
+    "head": "",
+    "definition": "",
+    "examples": "",
+    "name": "Română"
+  },
+  "RU": {
+    "head": "Слово Дня",
+    "word": "Слово",
+    "definition": "Определение",
+    "examples": "Примеры",
+    "name": "Русский"
+  },
+  "SH": {
+    "head": "",
+    "definition": "",
+    "examples": "",
+    "name": "上海闲话"
+  },
+  "ZH": {
+    "head": "",
+    "definition": "",
+    "examples": "",
+    "name": "普通话 / 國語"
+  }
+}

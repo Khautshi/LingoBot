@@ -4,6 +4,9 @@ import random
 import langdetect
 import pinyin as py
 import os
+import asyncio
+from datetime import datetime
+from discord import app_commands
 from discord.ext import commands
 from chinese_converter import to_traditional, to_simplified
 from googleapiclient.errors import HttpError
@@ -21,6 +24,9 @@ with open('JSON/immersion.json', mode='r', encoding='utf-8') as file:
     IMMERSION_CATEGORIES = {int(key): value for (key, value) in json.load(file).items()}
 with open('JSON/welcome.json', mode='r', encoding='utf-8') as file:
     WELCOME_MSGS = list(json.load(file).values())
+with open('JSON/wod.json', mode='r', encoding='utf-8') as file:
+    WOD = json.load(file)
+    LANGS = [app_commands.Choice(name=f"{n} | {WOD[n]['name']}", value=n) for n in WOD]
 
 
 def match_lang(text, iso_lang):
@@ -59,7 +65,6 @@ async def on_message(message: discord.Message):
         reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
         if not allowed:
             await channel.send(reply, reference=message)
-            # await message.interaction.response.send_message(reply, ephemeral=True) reference=message,
 
 
 @bot.tree.command()
@@ -113,7 +118,7 @@ async def trans_ru(interaction, text: str):
     """Transliterates russian text into latin characters."""
     is_russian = match_lang(text, ["ru"])
     if is_russian:
-        await interaction.response.send_message(unidecode(text), ephemeral=False)
+        await interaction.response.send_message(unidecode(text), ephemeral=True)
     else:
         await interaction.response.send_message("Wrong language input.", ephemeral=True)
 
@@ -176,6 +181,56 @@ async def wiktionary(interaction, search: str, language: str):
                               color=discord.Color.blurple(),
                               description="An entry for this word in language.title() could not be found.")
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command()
+@app_commands.checks.has_role("WoD writer")
+@app_commands.choices(language=LANGS)
+async def wod(interaction, language: discord.app_commands.Choice[str]):
+    """Posts an embed containing word of the day."""
+
+    def check(message):
+        return message.author == interaction.user and message.channel == interaction.channel
+
+    channel = discord.utils.get(interaction.user.guild.channels, name="word-of-the-day")
+    timeout = 300
+    if channel:
+        data = WOD[language.value]
+
+        try:
+            await interaction.response.send_message(f"{data['word']}:", ephemeral=True)
+            msg_2 = await bot.wait_for("message", check=check, timeout=timeout)
+            word = msg_2.content
+            await msg_2.delete()
+
+            await interaction.followup.send(f"IPA:", ephemeral=True)
+            msg_3 = await bot.wait_for("message", check=check, timeout=timeout)
+            ipa = msg_3.content
+            await msg_3.delete()
+
+            await interaction.followup.send(f"{data['definition']}:", ephemeral=True)
+            msg_4 = await bot.wait_for("message", check=check, timeout=timeout)
+            definition = msg_4.content
+            await msg_4.delete()
+
+            await interaction.followup.send(f"{data['examples']}:", ephemeral=True)
+            msg_5 = await bot.wait_for("message", check=check, timeout=timeout)
+            example = msg_5.content
+            await msg_5.delete()
+
+            current_datetime = datetime.now()
+            today = current_datetime.strftime("%Y-%m-%d")
+
+            embed = discord.Embed(title=f"{word} {ipa}",
+                                  description=definition,
+                                  color=discord.Color.blurple())
+            embed.add_field(name=f"{data['examples']}", value=example, inline=False)
+            embed.set_author(name=f"{data['head']} | {today}")
+            embed.set_footer(text=f"{interaction.user.display_name} | {language.value}",
+                             icon_url=interaction.user.display_avatar)
+            await channel.send(embed=embed)
+        except asyncio.TimeoutError:
+            await interaction.followup.send("Timeout reached.", ephemeral=True)
 
 
 bot.run(BOT_TOKEN)
