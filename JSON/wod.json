@@ -35,9 +35,10 @@
     "name": "Français"
   },
   "HK": {
-    "head": "",
-    "definition": "",
-    "examples": "",
+    "head": "Word of the Day",
+    "word": "今日嘅單字",
+    "definition": "定義",
+    "examples": "例句",
     "name": "廣東話"
   },
   "IT": {
@@ -48,10 +49,10 @@
     "name": "Italiano"
   },
   "JA": {
-    "head": "今日の単語",
-    "word": "単語",
-    "definition": "定義",
-    "examples": "例",
+    "head": "一日一言",
+    "word": "今日の言葉は",
+    "definition": "意味",
+    "examples": "例文",
     "name": "日本語"
   },
   "PT": {
@@ -62,9 +63,10 @@
     "name": "Português"
   },
   "RO": {
-    "head": "",
-    "definition": "",
-    "examples": "",
+    "head": "Cuvântul zilei",
+    "word": "Cuvântul",
+    "definition": "Definiţia",
+    "examples": "Exemple",
     "name": "Română"
   },
   "RU": {
@@ -75,15 +77,17 @@
     "name": "Русский"
   },
   "SH": {
-    "head": "",
-    "definition": "",
-    "examples": "",
-    "name": "上海闲话"
+    "head": "每日学只词 | 每日學隻詞",
+    "word": "今朝个词语 | 今朝個詞語",
+    "definition": "意思",
+    "examples": "例子",
+    "name": "上海闲话 | 上海閒話"
   },
   "ZH": {
-    "head": "",
-    "definition": "",
-    "examples": "",
-    "name": "普通话 / 國語"
+    "head": "每日一词 | 每日一詞",
+    "word": "今日一词 | 今日一詞",
+    "definition": "定义 | 定義",
+    "examples": "范例 | 範例",
+    "name": "普通話 | 國語"
   }
 }
