@@ -57,7 +57,7 @@ jupyterlab-widgets==3.0.9
 keyring==24.3.0
 langdetect==1.0.9
 language==0.6
-lingua-language-detector==2.0.1
+lingua-language-detector==2.0.2
 lxml==4.9.3
 markdown-it-py==3.0.0
 MarkupSafe==2.1.3
