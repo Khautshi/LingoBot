@@ -61,10 +61,13 @@ async def on_message(message: discord.Message):
     content = message.content
 
     if not message.author.bot and channel.category_id in list(IMMERSION_CATEGORIES.keys()):
-        allowed = match_lang(content, IMMERSION_CATEGORIES[channel.category_id]['allowed'])
-        reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
-        if not allowed:
-            await channel.send(reply, reference=message)
+        is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp"])
+        word_count = len(content) if is_nonspacing else len(content.split())
+        if word_count > 4:
+            allowed = match_lang(content, IMMERSION_CATEGORIES[channel.category_id]['allowed'])
+            reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
+            if not allowed:
+                await channel.send(reply, reference=message)
 
 
 @bot.tree.command()
