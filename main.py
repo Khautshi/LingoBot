@@ -119,7 +119,7 @@ async def trans_zh(interaction, text: str, style: app_commands.Choice[str] = "di
     """Transliterates mandarin text using pinyin."""
     is_chinese = match_lang(text, ["zh-cn", "zh-tw", "zh"])
     if is_chinese:
-        await interaction.response.send_message(pinyin.get(text, format=style, delimiter=' '), ephemeral=True)
+        await interaction.response.send_message(pinyin.get(text, format=style.value, delimiter=' '), ephemeral=True)
     else:
         await interaction.response.send_message("Wrong language input.", ephemeral=True)
 
@@ -282,7 +282,7 @@ async def wod(interaction, language: app_commands.Choice[str], word: str, defini
             embed.set_image(url=image)
 
         await channel.send(embed=embed)
-        if ping:
+        if ping.value:
             await channel.send(content="<@&1183618548048875582>")
 
 bot.run(BOT_TOKEN)
