@@ -4,13 +4,23 @@
     "word": "الكلمة",
     "definition": "المعنى",
     "examples": "الأمثلة",
+    "etymology": "الأصل والجذر",
     "name": "العربية"
+  },
+  "AT": {
+    "head": "Woat des Doges",
+    "word": "Woat",
+    "definition": "Definition",
+    "examples": "Beispü",
+    "etymology": "Etymologie",
+    "name": "Boarisch"
   },
   "CB": {
     "head": "Pulong Karong Adlawa",
     "word": "Pulong",
     "definition": "Pasabot",
     "examples": "Mga Pananglitan",
+    "etymology": "Gigikanan",
     "name": "Sinugbuanon"
   },
   "DE": {
@@ -18,6 +28,7 @@
     "word": "Wort",
     "definition": "Bedeutung",
     "examples": "Beispiele",
+    "etymology": "Etymologie",
     "name": "Deutsch"
   },
   "EN": {
@@ -25,6 +36,7 @@
     "word": "Word",
     "definition": "Definition",
     "examples": "Examples",
+    "etymology": "Etymology",
     "name": "English"
   },
   "ES": {
@@ -32,6 +44,7 @@
     "word": "Palabra",
     "definition": "Definición",
     "examples": "Ejemplos",
+    "etymology": "Etimología",
     "name": "Español"
   },
   "FR": {
@@ -39,13 +52,15 @@
     "word": "Mot",
     "definition": "Définition",
     "examples": "Exemples",
+    "etymology": "Étymologie",
     "name": "Français"
   },
   "HK": {
-    "head": "Word of the Day",
-    "word": "今日嘅單字",
+    "head": "每日一詞",
+    "word": "今日嘅生字",
     "definition": "定義",
     "examples": "例句",
+    "etymology": "語源",
     "name": "廣東話"
   },
   "IT": {
@@ -53,6 +68,7 @@
     "word": "Parola",
     "definition": "Definizione",
     "examples": "Esempi",
+    "etymology": "",
     "name": "Italiano"
   },
   "JA": {
@@ -60,6 +76,7 @@
     "word": "今日の言葉は",
     "definition": "意味",
     "examples": "例文",
+    "etymology": "語源",
     "name": "日本語"
   },
   "PT": {
@@ -67,6 +84,7 @@
     "word": "Palavra",
     "definition": "Definição",
     "examples": "Exemplos",
+    "etymology": "Etimologia",
     "name": "Português"
   },
   "RO": {
@@ -74,6 +92,7 @@
     "word": "Cuvântul",
     "definition": "Definiţia",
     "examples": "Exemple",
+    "etymology": "Etimologia",
     "name": "Română"
   },
   "RU": {
@@ -81,13 +100,15 @@
     "word": "Слово",
     "definition": "Определение",
     "examples": "Примеры",
+    "etymology": "Этимология",
     "name": "Русский"
   },
   "SH": {
-    "head": "每日学只词 | 每日學隻詞",
-    "word": "今朝个词语 | 今朝個詞語",
+    "head": "每日一句闲话 | 每日一句閒話",
+    "word": "今朝一句闲话 | 今朝一句閒話",
     "definition": "意思",
-    "examples": "例子",
+    "examples": "用法",
+    "etymology": "啥道理？",
     "name": "上海闲话 | 上海閒話"
   },
   "ZH": {
@@ -95,6 +116,7 @@
     "word": "今日一词 | 今日一詞",
     "definition": "定义 | 定義",
     "examples": "范例 | 範例",
+    "etymology": "词源 | 詞源",
     "name": "普通話 | 國語"
   }
 }

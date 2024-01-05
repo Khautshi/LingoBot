@@ -2,9 +2,10 @@ import discord
 import json
 import random
 import langdetect
-import pinyin as py
+import pinyin
 import os
 import asyncio
+import validators
 from datetime import datetime
 from discord import app_commands
 from discord.ext import commands
@@ -71,6 +72,7 @@ async def on_message(message: discord.Message):
 
 
 @bot.tree.command()
+@app_commands.describe(text="Chinese text that will be converted to both traditional and simplified characters.")
 # @discord.app_commands.checks.has_role("bot tester")
 async def convert(interaction, text: str):
     """Provides both conversions into simplified and traditional characters."""
@@ -83,6 +85,7 @@ async def convert(interaction, text: str):
 
 
 @bot.tree.command()
+@app_commands.describe(text="Chinese text that will be converted to simplified characters.")
 # @discord.app_commands.checks.has_role("bot tester")
 async def simplified(interaction, text: str):
     """Converts from traditional to simplified characters."""
@@ -94,6 +97,7 @@ async def simplified(interaction, text: str):
 
 
 @bot.tree.command()
+@app_commands.describe(text="Chinese text that will be converted to traditional characters.")
 # @discord.app_commands.checks.has_role("bot tester")
 async def traditional(interaction, text: str):
     """Converts from simplified to traditional characters."""
@@ -105,17 +109,23 @@ async def traditional(interaction, text: str):
 
 
 @bot.tree.command()
+@app_commands.choices(style=[app_commands.Choice(name="Diacritical tone marking.", value="diacritical"),
+                             app_commands.Choice(name="Numerical tone marking.", value="numerical"),
+                             app_commands.Choice(name="No tone marking.", value="strip")])
+@app_commands.describe(text="Chinese text, either simplified or traditional, that will be transliterated into pinyin.",
+                       style="Pinyin format, default will show diacritics for tones.")
 # @discord.app_commands.checks.has_role("bot tester")
-async def trans_zh(interaction, text: str):
+async def trans_zh(interaction, text: str, style: app_commands.Choice[str] = "diacritical"):
     """Transliterates mandarin text using pinyin."""
     is_chinese = match_lang(text, ["zh-cn", "zh-tw", "zh"])
     if is_chinese:
-        await interaction.response.send_message(py.get(text, format='diacritical', delimiter=' '), ephemeral=True)
+        await interaction.response.send_message(pinyin.get(text, format=style, delimiter=' '), ephemeral=True)
     else:
         await interaction.response.send_message("Wrong language input.", ephemeral=True)
 
 
 @bot.tree.command()
+@app_commands.describe(text="Russian text that will be transliterated.")
 # @discord.app_commands.checks.has_role("bot tester")
 async def trans_ru(interaction, text: str):
     """Transliterates russian text into latin characters."""
@@ -127,6 +137,7 @@ async def trans_ru(interaction, text: str):
 
 
 @bot.tree.command()
+@app_commands.describe(search="Search prompt.", language="Language to search in.")
 # @discord.app_commands.checks.has_role("bot tester")
 async def wiktionary(interaction, search: str, language: str):
     """Shows the first entry on Wiktionary (English) if it exists."""
@@ -186,54 +197,92 @@ async def wiktionary(interaction, search: str, language: str):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
+# @bot.tree.command()
+# @app_commands.checks.has_role("WoD writer")
+# @app_commands.choices(language=LANGS)
+# async def wod(interaction, language: discord.app_commands.Choice[str]):
+#     """Posts an embed containing word of the day."""
+#
+#     def check(message):
+#         return message.author == interaction.user and message.channel == interaction.channel
+#
+#     channel = discord.utils.get(interaction.user.guild.channels, name="word-of-the-day")
+#     timeout = 300
+#     if channel:
+#         data = WOD[language.value]
+#
+#         try:
+#             await interaction.response.send_message(f"{data['word']}:", ephemeral=True)
+#             msg_2 = await bot.wait_for("message", check=check, timeout=timeout)
+#             word = msg_2.content
+#             await msg_2.delete()
+#
+#             await interaction.followup.send(f"IPA:", ephemeral=True)
+#             msg_3 = await bot.wait_for("message", check=check, timeout=timeout)
+#             ipa = msg_3.content
+#             await msg_3.delete()
+#
+#             await interaction.followup.send(f"{data['definition']}:", ephemeral=True)
+#             msg_4 = await bot.wait_for("message", check=check, timeout=timeout)
+#             definition = msg_4.content
+#             await msg_4.delete()
+#
+#             await interaction.followup.send(f"{data['examples']}:", ephemeral=True)
+#             msg_5 = await bot.wait_for("message", check=check, timeout=timeout)
+#             example = msg_5.content
+#             await msg_5.delete()
+#
+#             current_datetime = datetime.now()
+#             today = current_datetime.strftime("%Y-%m-%d")
+#
+#             embed = discord.Embed(title=f"{word} {ipa}",
+#                                   description=definition,
+#                                   color=discord.Color.blurple())
+#             embed.add_field(name=f"{data['examples']}", value=example, inline=False)
+#             embed.set_author(name=f"{data['head']} | {today}")
+#             embed.set_footer(text=f"{interaction.user.display_name} | {language.value}",
+#                              icon_url=interaction.user.display_avatar)
+#             await channel.send(embed=embed)
+#         except asyncio.TimeoutError:
+#             await interaction.followup.send("Timeout reached.", ephemeral=True)
+
+
 @bot.tree.command()
 @app_commands.checks.has_role("WoD writer")
-@app_commands.choices(language=LANGS)
-async def wod(interaction, language: discord.app_commands.Choice[str]):
+@app_commands.choices(language=LANGS, ping=[app_commands.Choice(name="Enabled", value=1),
+                                            app_commands.Choice(name="Disabled", value=0)])
+@app_commands.describe(language="The language the word is in, pick one from the list.",
+                       word="Word of the day.",
+                       definition="Definition or an explanation of how it's used.",
+                       example="One or more examples using the chosen word.",
+                       ipa="Phonetic or phonemic transcription using IPA (International Phonetic Alphabet).",
+                       etymology="Origin of the word.",
+                       image="URL for the embedded image.",
+                       ping="Whether or not to ping word of the day. Default is True.")
+async def wod(interaction, language: app_commands.Choice[str], word: str, definition: str, example: str,
+              ping: app_commands.Choice[int], ipa: str = None, etymology: str = None, image: str = None):
     """Posts an embed containing word of the day."""
 
-    def check(message):
-        return message.author == interaction.user and message.channel == interaction.channel
-
     channel = discord.utils.get(interaction.user.guild.channels, name="word-of-the-day")
-    timeout = 300
+
     if channel:
         data = WOD[language.value]
+        today = datetime.now().strftime("%Y-%m-%d")
+        title = f"{word} {ipa}" if ipa else word
 
-        try:
-            await interaction.response.send_message(f"{data['word']}:", ephemeral=True)
-            msg_2 = await bot.wait_for("message", check=check, timeout=timeout)
-            word = msg_2.content
-            await msg_2.delete()
+        embed = discord.Embed(title=title, description=definition, color=discord.Color.blurple())
 
-            await interaction.followup.send(f"IPA:", ephemeral=True)
-            msg_3 = await bot.wait_for("message", check=check, timeout=timeout)
-            ipa = msg_3.content
-            await msg_3.delete()
+        embed.add_field(name=f"{data['examples']}", value=example, inline=False)
+        if etymology:
+            embed.add_field(name=f"{data['etymology']}", value=etymology, inline=False)
+        embed.set_author(name=f"{data['head']} | {today}")
+        embed.set_footer(text=f"{interaction.user.display_name} | {language.value}",
+                         icon_url=interaction.user.display_avatar)
+        if validators.url(image):
+            embed.set_image(url=image)
 
-            await interaction.followup.send(f"{data['definition']}:", ephemeral=True)
-            msg_4 = await bot.wait_for("message", check=check, timeout=timeout)
-            definition = msg_4.content
-            await msg_4.delete()
-
-            await interaction.followup.send(f"{data['examples']}:", ephemeral=True)
-            msg_5 = await bot.wait_for("message", check=check, timeout=timeout)
-            example = msg_5.content
-            await msg_5.delete()
-
-            current_datetime = datetime.now()
-            today = current_datetime.strftime("%Y-%m-%d")
-
-            embed = discord.Embed(title=f"{word} {ipa}",
-                                  description=definition,
-                                  color=discord.Color.blurple())
-            embed.add_field(name=f"{data['examples']}", value=example, inline=False)
-            embed.set_author(name=f"{data['head']} | {today}")
-            embed.set_footer(text=f"{interaction.user.display_name} | {language.value}",
-                             icon_url=interaction.user.display_avatar)
-            await channel.send(embed=embed)
-        except asyncio.TimeoutError:
-            await interaction.followup.send("Timeout reached.", ephemeral=True)
-
+        await channel.send(embed=embed)
+        if ping:
+            await channel.send(content="<@&1183618548048875582>")
 
 bot.run(BOT_TOKEN)
