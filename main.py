@@ -234,5 +234,6 @@ async def wod(interaction, language: app_commands.Choice[str], word: str, defini
         await channel.send(embed=embed)
         if ping.value:
             await channel.send(content="<@&1183618548048875582>")
+        await interaction.response.send_message("👍✅", ephemeral=True)
 
 bot.run(BOT_TOKEN)
