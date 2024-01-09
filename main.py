@@ -75,6 +75,7 @@ async def on_message(message: discord.Message):
     if "trans" in content:
         await message.add_reaction("🏳️‍⚧")
 
+
 @bot.tree.command()
 @app_commands.describe(text="Chinese text that will be converted to both traditional and simplified characters.")
 # @discord.app_commands.checks.has_role("bot tester")
@@ -119,7 +120,7 @@ async def traditional(interaction, text: str):
 @app_commands.describe(text="Chinese text, either simplified or traditional, that will be transliterated into pinyin.",
                        style="Pinyin format, default will show diacritics for tones.")
 # @discord.app_commands.checks.has_role("bot tester")
-async def trans_zh(interaction, text: str, style: app_commands.Choice[str] = app_commands.Choice(name="Diacritical tone marking.", value="diacritical")):
+async def trans_zh(interaction, text: str, style: app_commands.Choice[str]):
     """Transliterates mandarin text using pinyin."""
     is_chinese = match_lang(text, ["zh-cn", "zh-tw", "zh"])
     if is_chinese:
