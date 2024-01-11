@@ -5,6 +5,7 @@ import langdetect
 import pinyin
 import os
 import validators
+import unicodedata
 from datetime import datetime
 from discord import app_commands
 from discord.ext import commands
@@ -66,6 +67,7 @@ def match_lang(text, iso_lang):
 
 
 def remove_pinyin(input_string):
+    input_string = ''.join(c for c in unicodedata.normalize('NFD', input_string) if unicodedata.category(c) != 'Mn')
     for syllable in PINYIN:
         input_string = input_string.replace(syllable, '')
     return input_string
@@ -93,7 +95,7 @@ async def on_message(message: discord.Message):
     content = message.content
 
     if not message.author.bot and channel.category_id in list(IMMERSION_CATEGORIES.keys()):
-        content = remove_pinyin(content)
+        content = remove_pinyin(content) if channel.category_id == "1182926926160072746" else content
         is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp", "ko"])
         word_count = len(content) if is_nonspacing else len(content.split())
         if word_count > 10:
