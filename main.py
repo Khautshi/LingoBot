@@ -102,11 +102,6 @@ async def on_message(message: discord.Message):
             if not allowed:
                 await channel.send(reply, reference=message)
 
-    if "gay" in content:
-        await message.add_reaction("�")
-    if "trans" in content:
-        await message.add_reaction("�")
-
 
 @bot.tree.command()
 @app_commands.describe(text="Chinese text that will be converted to both traditional and simplified characters.")
