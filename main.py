@@ -4,7 +4,6 @@ import random
 import langdetect
 import pinyin
 import os
-import asyncio
 import validators
 from datetime import datetime
 from discord import app_commands
@@ -28,16 +27,48 @@ with open('JSON/welcome.json', mode='r', encoding='utf-8') as file:
 with open('JSON/wod.json', mode='r', encoding='utf-8') as file:
     WOD = json.load(file)
     LANGS = [app_commands.Choice(name=f"{n} | {WOD[n]['name']}", value=n) for n in WOD]
+PINYIN = ['shuang', 'chuang', 'diang', 'cheng', 'liang', 'jiang', 'niang', 'jiong', 'qiang', 'shuai', 'xiang', 'xiong',
+          'qiong', 'huang', 'shang', 'chuan', 'guang', 'chuai', 'chang', 'kuang', 'chong', 'shong', 'shuan', 'sheng',
+          'heng', 'tong', 'biao', 'quan', 'guan', 'fang', 'tian', 'weng', 'shai', 'bian', 'dang', 'gong', 'diao',
+          'dong', 'mian', 'reng', 'qing', 'kuan', 'geng', 'ning', 'chuo', 'kuai', 'hong', 'ting', 'ming', 'song',
+          'ding', 'juan', 'mang', 'shan', 'chou', 'tiao', 'ceng', 'nian', 'kang', 'chun', 'chao', 'beng', 'shei',
+          'duan', 'teng', 'ruan', 'bang', 'miao', 'piao', 'nong', 'xian', 'yuan', 'xuan', 'seng', 'jing', 'neng',
+          'ping', 'shui', 'yong', 'wang', 'gang', 'lang', 'tang', 'chan', 'rang', 'chua', 'huan', 'pang', 'shun',
+          'yang', 'shuo', 'cuan', 'sang', 'dian', 'bing', 'pian', 'leng', 'shou', 'luan', 'chui', 'shen', 'nuan',
+          'shua', 'peng', 'long', 'tuan', 'shao', 'feng', 'liao', 'chen', 'cong', 'niao', 'guai', 'meng', 'xiao',
+          'ling', 'lian', 'chai', 'suan', 'qian', 'kong', 'xing', 'huai', 'ying', 'deng', 'hang', 'jiao', 'nang',
+          'jian', 'keng', 'cang', 'rong', 'qiao', 'nei', 'dan', 'run', 'duo', 'mei', 'cui', 'lün', 'tui', 'lin', 'wen',
+          'qin', 'nen', 'niu', 'hao', 'gei', 'wan', 'nin', 'dou', 'cun', 'nüe', 'nun', 'pei', 'man', 'xia', 'lia',
+          'min', 'lan', 'gui', 'hua', 'sui', 'lao', 'shi', 'sei', 'qie', 'diu', 'mai', 'tun', 'jin', 'tan', 'wai',
+          'kao', 'ban', 'hai', 'hen', 'qia', 'ben', 'sao', 'hui', 'gan', 'pai', 'suo', 'ren', 'kua', 'hun', 'tie',
+          'shu', 'cuo', 'rui', 'fei', 'she', 'kan', 'xiu', 'che', 'pan', 'nan', 'sai', 'cha', 'zun', 'lie', 'rao',
+          'nai', 'tou', 'luo', 'liu', 'xun', 'mao', 'dun', 'dai', 'cou', 'nao', 'gou', 'nou', 'ran', 'san', 'jue',
+          'fou', 'kai', 'gao', 'sha', 'die', 'gun', 'yun', 'kun', 'nia', 'yue', 'miu', 'yan', 'bin', 'cai', 'lei',
+          'men', 'gai', 'pin', 'guo', 'tuo', 'kuo', 'sun', 'nie', 'qiu', 'sen', 'tao', 'yin', 'pen', 'hei', 'ken',
+          'dao', 'you', 'han', 'xie', 'nuo', 'den', 'xin', 'bei', 'gua', 'ang', 'kou', 'cen', 'que', 'hou', 'bao',
+          'kui', 'dui', 'huo', 'jiu', 'chu', 'bai', 'zuo', 'dei', 'cao', 'mou', 'qun', 'chi', 'lüe', 'pao', 'tai',
+          'yao', 'ruo', 'sou', 'lai', 'lun', 'fen', 'jun', 'pou', 'gen', 'mie', 'wei', 'fan', 'jia', 'bie', 'rou',
+          'can', 'pie', 'lou', 'jie', 'xue', 'ge', 'di', 'da', 'ao', 'ne', 'na', 'an', 'la', 'ha', 'ku', 'pa', 're',
+          'ju', 'yu', 'ye', 'er', 'nü', 'gu', 'fo', 'qi', 'du', 'mo', 'bu', 'ei', 'si', 'ri', 'ca', 'ka', 'de', 'ya',
+          'yi', 'lü', 'fu', 'me', 'se', 'bi', 'po', 'lo', 'ga', 'wa', 'hu', 'ke', 'su', 'ma', 'ni', 'ru', 'bo', 'ci',
+          'ai', 'qu', 'ji', 'ce', 'tu', 'fa', 'xu', 'cu', 'mu', 'ba', 'ou', 'pu', 'lu', 'he', 'nu', 'le', 'li', 'sa',
+          'wu', 'xi', 'en', 'te', 'mi', 'pi', 'wo', 'ti', 'ta', 'e', 'a']
 
 
 def match_lang(text, iso_lang):
-    detector = LanguageDetectorBuilder.from_all_languages().build()
+    # detector = LanguageDetectorBuilder.from_all_languages().build()
     result_a = langdetect.detect(text)
-    result_b = detector.detect_language_of(text).iso_code_639_1.name.lower()
+    # result_b = detector.detect_language_of(text).iso_code_639_1.name.lower()
     for each in iso_lang:
-        if result_a == each or result_b == each:
+        if result_a == each:
             return True
     return False
+
+
+def remove_pinyin(input_string):
+    for syllable in PINYIN:
+        input_string = input_string.replace(syllable, '')
+    return input_string
 
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
@@ -62,18 +93,19 @@ async def on_message(message: discord.Message):
     content = message.content
 
     if not message.author.bot and channel.category_id in list(IMMERSION_CATEGORIES.keys()):
-        is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp"])
+        content = remove_pinyin(content)
+        is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp", "ko"])
         word_count = len(content) if is_nonspacing else len(content.split())
-        if word_count > 4:
+        if word_count > 8:
             allowed = match_lang(content, IMMERSION_CATEGORIES[channel.category_id]['allowed'])
             reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
             if not allowed:
                 await channel.send(reply, reference=message)
 
     if "gay" in content:
-        await message.add_reaction("🏳️‍🌈")
+        await message.add_reaction(":rainbow_flag:")
     if "trans" in content:
-        await message.add_reaction("🏳️‍⚧")
+        await message.add_reaction(":transgender_flag:")
 
 
 @bot.tree.command()
