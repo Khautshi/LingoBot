@@ -96,16 +96,16 @@ async def on_message(message: discord.Message):
         content = remove_pinyin(content)
         is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp", "ko"])
         word_count = len(content) if is_nonspacing else len(content.split())
-        if word_count > 8:
+        if word_count > 10:
             allowed = match_lang(content, IMMERSION_CATEGORIES[channel.category_id]['allowed'])
             reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
             if not allowed:
                 await channel.send(reply, reference=message)
 
     if "gay" in content:
-        await message.add_reaction(":rainbow_flag:")
+        await message.add_reaction("�")
     if "trans" in content:
-        await message.add_reaction(":transgender_flag:")
+        await message.add_reaction("�")
 
 
 @bot.tree.command()
