@@ -60,6 +60,12 @@
     ],
     "reply": "Пожалуйста придерживайтесь только русскому языку, в этом канале не позволяется польза других языков."
   },
+  "1197382818771247124": {
+    "allowed": [
+      "tl"
+    ],
+    "reply": "Tagalog lamang ang pwede gamitin, hindi pwede gamitin ang ibang wika dito."
+  },
   "1194114508290011218": {
     "allowed": [
       "vi"
