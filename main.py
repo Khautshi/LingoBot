@@ -98,7 +98,7 @@ async def on_message(message: discord.Message):
         content = remove_pinyin(content) if channel.category_id == "1182926926160072746" else content
         is_nonspacing = match_lang(content, ["zh-cn", "zh-tw", "zh", "jp", "ko"])
         word_count = len(content) if is_nonspacing else len(content.split())
-        if word_count > 10:
+        if word_count > 8:
             allowed = match_lang(content, IMMERSION_CATEGORIES[channel.category_id]['allowed'])
             reply = IMMERSION_CATEGORIES[channel.category_id]['reply']
             if not allowed:
