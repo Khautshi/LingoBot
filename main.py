@@ -177,6 +177,7 @@ async def wiktionary(interaction, search: str, language: str):
     """Shows the first entry on Wiktionary (English) if it exists."""
     parser = WiktionaryParser()
     result = parser.fetch(search, language)
+    print(search, language, result)
     result = result[0] if result else {}
     if result and result["definitions"]:
         ipa = "- " + "\n- ".join([n.replace("IPA: ", "") for n in result["pronunciations"]["text"] if "IPA" in n])
@@ -227,7 +228,7 @@ async def wiktionary(interaction, search: str, language: str):
         embed = discord.Embed(title=f"{search}",
                               url=f"https://en.wiktionary.org/wiki/{search.lower()}",
                               color=discord.Color.blurple(),
-                              description="An entry for this word in language.title() could not be found.")
+                              description=f"An entry for this word in {language.title()} could not be fetched, click on the link to go to Wiktionary.")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
