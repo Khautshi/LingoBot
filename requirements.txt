@@ -1,4 +1,4 @@
-discord.py==2.3.2
+discord.py==2.5.2
 langdetect==1.0.9
 pinyin==0.4.0
 chinese_converter==1.1.1
