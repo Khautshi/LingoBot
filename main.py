@@ -15,6 +15,7 @@ from lingua import Language, LanguageDetectorBuilder
 from wiktionaryparser import WiktionaryParser
 from google_images_search import GoogleImagesSearch
 from unidecode import unidecode
+import re
 
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
@@ -60,6 +61,7 @@ def match_lang(text, iso_lang):
     # detector = LanguageDetectorBuilder.from_all_languages().build()
     result_a = langdetect.detect(text)
     # result_b = detector.detect_language_of(text).iso_code_639_1.name.lower()
+    print(result_a)
     for each in iso_lang:
         if result_a == each:
             return True
@@ -159,15 +161,15 @@ async def trans_zh(interaction, text: str, style: app_commands.Choice[str]):
 
 
 @bot.tree.command()
-@app_commands.describe(text="Russian text that will be transliterated.")
+@app_commands.describe(text="Cyrillic text that will be transliterated.")
 # @discord.app_commands.checks.has_role("bot tester")
-async def trans_ru(interaction, text: str):
-    """Transliterates russian text into latin characters."""
-    is_russian = match_lang(text, ["ru"])
-    if is_russian:
+async def trans_cyrillic(interaction, text: str):
+    """Transliterates cyrillic text into latin characters."""
+    is_cyrillic = bool(re.search('[а-яА-Я]', text))
+    if is_cyrillic:
         await interaction.response.send_message(unidecode(text), ephemeral=True)
     else:
-        await interaction.response.send_message("Wrong language input.", ephemeral=True)
+        await interaction.response.send_message("Wrong input.", ephemeral=True)
 
 
 @bot.tree.command()

@@ -11,6 +11,12 @@
     ],
     "reply": "Per favor, escriu només en català, altres llengües no estan permeses en aquest canal."
   },
+  "1360339989673676810": {
+    "allowed": [
+      "da"
+    ],
+    "reply": "Skriv venligst kun på dansk, andre sprog er ikke tilladt i denne kanal."
+  },
   "1182923658923102278": {
     "allowed": [
       "de"
